@@ -1,7 +1,7 @@
 "use client";
 
 import { createBoard } from "@/actions/create-board";
-import FormInput from "./FormInput";
+import FormInput from "@/components/form/FormInput";
 import FormButton from "./FormButton";
 import { useAction } from "@/hooks/use-action";
 
@@ -22,7 +22,7 @@ const Form = () => {
 
   return (
     <form action={onSubmit}>
-      <FormInput errors={fieldErrors} />
+      <FormInput label="Board Title" id="title" errors={fieldErrors} />
       <FormButton />
     </form>
   );
