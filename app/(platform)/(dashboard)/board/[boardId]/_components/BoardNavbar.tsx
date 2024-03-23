@@ -1,8 +1,7 @@
-import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
 import { Board } from "@prisma/client";
 import React from "react";
 import BoardTitleForm from "./BoardTitleForm";
+import BoardOptions from "./BoardOptions";
 
 interface BoardNavbarProps {
   board: Board;
@@ -15,6 +14,9 @@ const BoardNavbar = async ({ board }: BoardNavbarProps) => {
   "
     >
       <BoardTitleForm board={board} />
+      <div className="ml-auto">
+        <BoardOptions id={board.id} />
+      </div>
     </div>
   );
 };
