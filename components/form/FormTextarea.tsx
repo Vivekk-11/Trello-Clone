@@ -51,6 +51,7 @@ const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
             </Label>
           ) : null}
           <Textarea
+            name={id}
             onKeyDown={onKeyDown}
             onClick={onClick}
             onBlur={onBlur}
