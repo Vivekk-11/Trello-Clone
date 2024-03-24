@@ -5,14 +5,28 @@ import React, { useEffect, useState } from "react";
 import ListForm from "./ListForm";
 import ListItem from "./ListItem";
 import { Droppable, DragDropContext } from "@hello-pangea/dnd";
+import { useAction } from "@/hooks/use-action";
+import { updateListOrder } from "@/actions/update-list-order";
+import { toast } from "sonner";
+import { useParams } from "next/navigation";
 
 interface ListContainerProps {
   boardId: string;
   lists: ListWithCards[];
 }
 
-const ListContainer = ({ boardId, lists }: ListContainerProps) => {
+const ListContainer = ({ lists }: ListContainerProps) => {
   const [orderedList, setOrderedList] = useState(lists);
+  const params = useParams();
+  const boardId: string = params.boardId! as string;
+  const { execute } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success("List reordered");
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
 
   useEffect(() => {
     setOrderedList(lists);
@@ -47,8 +61,8 @@ const ListContainer = ({ boardId, lists }: ListContainerProps) => {
           return { ...item, order: index };
         }
       );
-      // TODO:- Trigger Server Action
       setOrderedList(items);
+      execute({ items, boardId });
     }
 
     //  User moves a card
