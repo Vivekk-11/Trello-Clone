@@ -1,6 +1,6 @@
 "use client";
 import { List } from "@prisma/client";
-import React from "react";
+import React, { ElementRef, useRef } from "react";
 
 import {
   Popover,
@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, X } from "lucide-react";
 import FormSubmit from "@/components/form/FormSubmit";
 import { Separator } from "@/components/ui/separator";
+import { useAction } from "@/hooks/use-action";
+import { deleteList } from "@/actions/delete-list";
+import { toast } from "sonner";
 
 interface ListOptionsProps {
   onAddCard: () => void;
@@ -19,6 +22,25 @@ interface ListOptionsProps {
 }
 
 const ListOptions = ({ onAddCard, list }: ListOptionsProps) => {
+  const closeRef = useRef<ElementRef<"button">>(null);
+
+  const { execute: executeDeleteList } = useAction(deleteList, {
+    onSuccess: (data) => {
+      toast.success(`List "${data.title}" deleted!`);
+      closeRef.current?.click();
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
+  const onDelete = (formData: FormData) => {
+    const id = formData.get("id")! as string;
+    const boardId = formData.get("boardId")! as string;
+
+    executeDeleteList({ id, boardId });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -30,7 +52,7 @@ const ListOptions = ({ onAddCard, list }: ListOptionsProps) => {
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           List Actions
         </div>
-        <PopoverClose asChild>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             variant="ghost"
             className="w-auto h-auto p-2 absolute top-2 right-2 text-neutral-600"
@@ -61,7 +83,7 @@ const ListOptions = ({ onAddCard, list }: ListOptionsProps) => {
           </FormSubmit>
         </form>
         <Separator />
-        <form>
+        <form action={onDelete}>
           <input type="hidden" value={list.id} id="id" name="id" />
           <input
             type="hidden"
