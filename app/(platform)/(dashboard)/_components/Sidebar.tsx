@@ -47,7 +47,6 @@ const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
   };
 
   if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
-    console.log("Loading...");
     return (
       <>
         <div className="flex items-center justify-between mb-2">

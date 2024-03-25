@@ -54,9 +54,6 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
       const title = formData.get("title")! as string;
       const boardId = formData.get("boardId")! as string;
       const listId = formData.get("listId")! as string;
-      console.log("Title", title);
-      console.log("Title", boardId);
-      console.log("Title", listId);
 
       execute({ title, boardId, listId });
     };

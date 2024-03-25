@@ -4,11 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import ListContainer from "./_components/ListContainer";
 
-interface BoardIdPageProps {
-  boardId: string;
-}
-
-const BoardIdPage = async ({ boardId }: BoardIdPageProps) => {
+const BoardIdPage = async ({ params }: { params: { boardId: string } }) => {
   const { orgId } = auth();
 
   if (!orgId) {
@@ -17,7 +13,7 @@ const BoardIdPage = async ({ boardId }: BoardIdPageProps) => {
 
   const lists = await db.list.findMany({
     where: {
-      boardId,
+      boardId: params.boardId,
       board: {
         orgId,
       },
@@ -36,7 +32,7 @@ const BoardIdPage = async ({ boardId }: BoardIdPageProps) => {
 
   return (
     <div className="p-4 h-full overflow-x-auto">
-      <ListContainer boardId={boardId} lists={lists} />
+      <ListContainer boardId={params.boardId} lists={lists} />
     </div>
   );
 };
