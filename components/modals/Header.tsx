@@ -39,7 +39,7 @@ const Header = ({ card }: HeaderProps) => {
   const onSubmit = (formData: FormData) => {
     const title = formData.get("title")! as string;
 
-    if (title === card.id) return;
+    if (title.trim() === card.title.trim()) return;
     execute({ title, boardId, id: card.id });
   };
 
